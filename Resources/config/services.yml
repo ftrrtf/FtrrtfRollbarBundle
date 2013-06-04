@@ -1,0 +1,9 @@
+parameters:
+  ftrrtf_rollbar.twig_extension.class: Ftrrtf\RollbarBundle\Twig\RollbarExtension
+  ftrrtf_rollbar.exception_listener.class: Ftrrtf\RollbarBundle\EventListener\ExceptionListener
+
+services:
+  ftrrtf_rollbar.exception_listener:
+    class: %ftrrtf_rollbar.exception_listener.class%
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
