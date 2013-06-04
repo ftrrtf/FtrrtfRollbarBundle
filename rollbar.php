@@ -50,6 +50,10 @@ class Rollbar {
         if (!is_null($last_error)) {
             switch($last_error['type']) {
                 case E_ERROR:
+                case E_PARSE:
+                case E_CORE_ERROR:
+                case E_CORE_WARNING:
+                case E_COMPILE_ERROR:
                     self::$instance->report_php_error($last_error['type'], $last_error['message'], $last_error['file'], $last_error['line']);
                     break;
             }
@@ -89,9 +93,9 @@ class RollbarNotifier {
     public $shift_function = true;
     public $timeout = 3;
 
-    private $config_keys = array('access_token', 'base_api_url', 'batch_size', 'batched', 'branch', 
-        'capture_error_backtraces', 'environment', 'error_sample_rates', 'handler', 'agent_log_location', 'host', 
-        'logger', 'max_errno', 'person', 'person_fn', 'root', 'scrub_fields', 'shift_function', 
+    private $config_keys = array('access_token', 'base_api_url', 'batch_size', 'batched', 'branch',
+        'capture_error_backtraces', 'environment', 'error_sample_rates', 'handler', 'agent_log_location', 'host',
+        'logger', 'max_errno', 'person', 'person_fn', 'root', 'scrub_fields', 'shift_function',
         'timeout');
 
     // cached values for request/server/person data
@@ -372,14 +376,14 @@ class RollbarNotifier {
 
         return $this->_request_data;
     }
-    
+
     private function scrub_request_params($params) {
         foreach ($params as $k => $v) {
             if (in_array($k, $this->scrub_fields)) {
                 $params[$k] = str_repeat('*', strlen($v));
             }
         }
-        
+
         return $params;
     }
 
@@ -647,7 +651,7 @@ class RollbarNotifier {
 
     private function send_batch_agent($batch) {
         $this->log_info("Writing batch to file");
-        
+
         foreach ($batch as $item) {
             fwrite($this->_agent_log, json_encode($item) . "\n");
         }
