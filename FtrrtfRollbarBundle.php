@@ -24,7 +24,7 @@ class FtrrtfRollbarBundle extends Bundle
             $host        = $container->getParameter('ftrrtf_rollbar.host');
             $branch      = $container->getParameter('ftrrtf_rollbar.branch');
             $hostEnv     = $container->getParameter('ftrrtf_rollbar.environment');
-            $appEnv      = $container->getParameter('');
+            $appEnv      = $container->getParameter('kernel.environment');
 
 
 //            $getCurrentUser = function() use ($container) {
