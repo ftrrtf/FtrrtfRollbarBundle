@@ -37,6 +37,13 @@ class Rollbar {
         self::$instance->report_message($message, $level, $extra_data);
     }
 
+    public static function report_backtrace_message($message, $level = 'error', $backtrace, $extra_data = null) {
+        if (self::$instance == null) {
+            return;
+        }
+        self::$instance->report_backtrace_message($message, $level, $backtrace, $extra_data);
+    }
+
     public static function report_php_error($errno, $errstr, $errfile, $errline) {
         if (self::$instance != null) {
             self::$instance->report_php_error($errno, $errstr, $errfile, $errline);
@@ -164,6 +171,18 @@ class RollbarNotifier {
     public function report_message($message, $level = 'error', $extra_data = null) {
         try {
             $this->_report_message($message, $level, $extra_data);
+        } catch (Exception $e) {
+            try {
+                $this->log_error("Exception while reporting message");
+            } catch (Exception $e) {
+                // swallow
+            }
+        }
+    }
+
+    public function report_backtrace_message($message, $level = 'error', $backtrace, $extra_data = null) {
+        try {
+            $this->_report_backtrace_message($message, $level, $backtrace, $extra_data);
         } catch (Exception $e) {
             try {
                 $this->log_error("Exception while reporting message");
@@ -349,6 +368,34 @@ class RollbarNotifier {
         $this->send_payload($payload);
     }
 
+    private function _report_backtrace_message($message, $level, $backtrace, $extra_data) {
+        if (!$this->check_config()) {
+            return;
+        }
+
+        $data = $this->build_base_data();
+        $data['level'] = strtolower($level);
+
+        $data['body']['trace'] = array(
+            'frames' => $this->build_backtrace_frames($backtrace),
+            'exception' => array(
+                'class' => 'backtrace',
+                'message' => $message
+            )
+        );
+
+        if ($extra_data !== null && is_array($extra_data)) {
+            $data['custom'] = $extra_data;
+        }
+
+        $data['request'] = $this->build_request_data();
+        $data['server'] = $this->build_server_data();
+        $data['person'] = $this->build_person_data();
+
+        $payload = $this->build_payload($data);
+        $this->send_payload($payload);
+    }
+
     private function check_config() {
         return $this->access_token && strlen($this->access_token) == 32;
     }
@@ -467,6 +514,31 @@ class RollbarNotifier {
         );
 
         $this->shift_method($frames);
+
+        return $frames;
+    }
+
+    /**
+     * @param array $backtrace
+     * @return array
+     */
+    private function build_backtrace_frames($backtrace) {
+        $frames = array();
+        foreach ($backtrace as $frame) {
+            $frames[] = array(
+                'filename' => isset($frame['file'])
+                    ? $frame['file']
+                    : (isset($frame['class'])
+                        ? '<Class> ' . $frame['class']
+                        : '<internal>'),
+                'lineno' =>  isset($frame['line']) ? $frame['line'] : 0,
+                'method' => $frame['function'],
+                // TODO include args? need to sanitize first.
+            );
+        }
+
+        // rollbar expects most recent call to be last, not first
+        $frames = array_reverse($frames);
 
         return $frames;
     }
