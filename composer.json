@@ -1,0 +1,16 @@
+{
+    "name": "ftrrtf/rollbar-bundle",
+    "description": "Symfony2 Bundle for rollbar.com",
+    "keywords": ["rollbar", "errors"],
+    "license": "MIT",
+    "type": "bundle",
+    "authors": [{"name": "Valeriy Rabievskiy", "email": "dev@ftrrtf.com"}],
+    "require": {
+        "ext-curl": "*",
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "psr-0": {"Ftrrtf\\RollbarBundle\\": ""}
+    },
+    "target-dir" : "Ftrrtf/RollbarBundle"
+}
