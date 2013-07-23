@@ -53,8 +53,14 @@ class FtrrtfRollbarBundle extends Bundle
                 'environment'  => sprintf('%s[%s]', $hostEnv, $appEnv),
                 'host'         => $host,
                 'branch'       => $branch,
+                'scrub_fields' => array(
+                    'passwd', 'password', 'secret', 'confirm_password', 'password_confirmation', 'payment'
+                ),
 //                'person_fn'    => $getCurrentUser
             ));
+
+
+            \Rollbar::report_message('test scrub');
         }
     }
 

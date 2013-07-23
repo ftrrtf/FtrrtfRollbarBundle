@@ -427,7 +427,10 @@ class RollbarNotifier {
     private function scrub_request_params($params) {
         foreach ($params as $k => $v) {
             if (in_array($k, $this->scrub_fields)) {
-                $params[$k] = str_repeat('*', strlen($v));
+                $length = is_string($v)
+                    ? strlen($v)
+                    : 10;
+                $params[$k] = str_repeat('*', $length);
             }
         }
 
