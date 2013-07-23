@@ -55,12 +55,9 @@ class FtrrtfRollbarBundle extends Bundle
                 'branch'       => $branch,
                 'scrub_fields' => array(
                     'passwd', 'password', 'secret', 'confirm_password', 'password_confirmation', 'payment'
-                ),
+                )
 //                'person_fn'    => $getCurrentUser
             ));
-
-
-            \Rollbar::report_message('test scrub');
         }
     }
 
