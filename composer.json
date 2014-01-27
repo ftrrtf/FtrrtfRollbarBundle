@@ -1,16 +1,32 @@
 {
-    "name": "ftrrtf/rollbar-bundle",
-    "description": "Symfony2 Bundle for rollbar.com",
-    "keywords": ["rollbar", "errors"],
-    "license": "MIT",
-    "type": "bundle",
-    "authors": [{"name": "Valeriy Rabievskiy", "email": "dev@ftrrtf.com"}],
-    "require": {
-        "ext-curl": "*",
-        "php": ">=5.3"
+    "name" : "ftrrtf/rollbar-bundle",
+    "description" : "Symfony2 Bundle for rollbar.com",
+    "keywords" : ["rollbar", "errors", "symfony2"],
+    "license" : "MIT",
+    "type" : "symfony-bundle",
+    "authors" : [
+        {
+            "name" : "Valeriy Rabievskiy",
+            "email" : "dev@ftrrtf.com"
+        }
+    ],
+    "require" : {
+        "ext-curl" : "*",
+        "php" : ">=5.3",
+        "ftrrtf/rollbar-notifier": "dev-master"
     },
-    "autoload": {
-        "psr-0": {"Ftrrtf\\RollbarBundle\\": ""}
+    "require-dev" : {
+        "phpspec/phpspec" : "dev-master",
+        "phpspec/symfony2-extension": "dev-master",
+        "knplabs/phpspec-welldone-extension": "dev-master"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Ftrrtf\\RollbarBundle\\" : ""
+        }
     },
     "target-dir" : "Ftrrtf/RollbarBundle"
 }
