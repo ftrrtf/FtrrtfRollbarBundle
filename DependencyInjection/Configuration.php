@@ -22,12 +22,26 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('access_token')->isRequired()->end()
-                ->scalarNode('host')->defaultNull()->end()
-                ->scalarNode('git_branch_auto_detect')->defaultTrue()->end()
-                ->scalarNode('branch')->defaultValue('master')->end()
-                ->scalarNode('root_dir')->defaultValue('%kernel.root_dir%/../')->end()
-                ->scalarNode('environment')->defaultValue('unknown')->end()
+                ->arrayNode('notifier')
+                    ->children()
+                        ->scalarNode('access_token')->isRequired()->end()
+                        ->arrayNode('transport')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('type')->defaultValue('curl')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('environment')
+                    ->children()
+//                        ->scalarNode('host')->defaultNull()->end()
+                        ->scalarNode('branch')->defaultValue('master')->end()
+                        ->scalarNode('root_dir')->defaultValue('%kernel.root_dir%/../')->end()
+                        ->scalarNode('environment')->defaultValue('unknown')->end()
+                        ->scalarNode('framework')->end()
+                    ->end()
+                ->end()
             ->end();
 
 
