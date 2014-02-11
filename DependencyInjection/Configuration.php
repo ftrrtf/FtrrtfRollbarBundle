@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
 //                        ->scalarNode('host')->defaultNull()->end()
                         ->scalarNode('branch')->defaultValue('master')->end()
-                        ->scalarNode('root_dir')->defaultValue('%kernel.root_dir%/../')->end()
+                        ->scalarNode('root_dir')->defaultValue('')->end()
                         ->scalarNode('environment')->defaultValue('unknown')->end()
                         ->scalarNode('framework')->end()
                     ->end()
