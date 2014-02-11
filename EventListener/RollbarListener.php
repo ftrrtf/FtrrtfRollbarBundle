@@ -79,8 +79,6 @@ class RollbarListener
     {
         $this->errorHandler->registerErrorHandler($this->notifier);
         $this->errorHandler->registerShutdownHandler($this->notifier);
-
-        $this->setException(new \Exception('fegrhfjgyhuij'));
     }
 
     /**
