@@ -20,16 +20,19 @@ class Environment extends BaseEnvironment
      */
     protected $request;
 
-    // Cached values for request
     /**
+     * Cached values for request
+     * 
      * @return array|null
      */
     public function getRequestData()
     {
         parent::getRequestData();
 
-        if (in_array($this->getRequest()->getMethod(), array('PUT', 'DELETE'))) {
-            $this->requestData[$this->getRequest()->getMethod()] = $this->getRequest()->request->all();
+        if ($this->getRequest() instanceof Request) {
+            if (in_array($this->getRequest()->getMethod(), array('PUT', 'DELETE'))) {
+                $this->requestData[$this->getRequest()->getMethod()] = $this->getRequest()->request->all();
+            }
         }
 
         return $this->requestData;
