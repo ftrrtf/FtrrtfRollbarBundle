@@ -25,7 +25,7 @@ class RollbarListenerSpec extends ObjectBehavior
         Environment $environment
     ) {
         $notifier->getEnvironment()->willReturn($environment);
-        $environment->setOption('personFn', Argument::type('\Closure'))->shouldBeCalled();
+        $environment->setOption('person_callback', Argument::type('\Closure'))->shouldBeCalled();
 
         $this->beConstructedWith($notifier, $errorHandler, $securityContext);
     }
