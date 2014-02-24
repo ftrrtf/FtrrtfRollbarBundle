@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class RollbarListenerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         Notifier $notifier,
         ErrorHandler $errorHandler,
         SecurityContextInterface $securityContext,
@@ -30,12 +30,12 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->beConstructedWith($notifier, $errorHandler, $securityContext);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType('Ftrrtf\RollbarBundle\EventListener\RollbarListener');
     }
 
-    public function it_register_handlers_on_kernel_request(
+    function it_register_handlers_on_kernel_request(
         ErrorHandler $errorHandler,
         Notifier $notifier,
         GetResponseEvent $event
@@ -46,41 +46,45 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-    public function it_catch_exception(GetResponseForExceptionEvent $event, \Exception $exception)
+    function it_catch_exception(GetResponseForExceptionEvent $event, \Exception $exception)
     {
         $event->getException()->willReturn($exception);
         $this->onKernelException($event);
         $this->getException()->shouldReturn($exception);
     }
 
-    public function it_skip_HTTP_exception(GetResponseForExceptionEvent $event, HttpException $exception)
+    function it_skip_HTTP_exception(GetResponseForExceptionEvent $event, HttpException $httpException)
     {
-        $event->getException()->willReturn($exception);
+        $event->getException()->willReturn($httpException);
         $this->onKernelException($event);
         $this->getException()->shouldReturn(null);
     }
 
-    public function it_report_exception_on_kernel_response(
-        Notifier $notifier,
-        \Exception $exception,
-        FilterResponseEvent $event
-    ) {
-        $notifier->reportException($exception)->shouldBeCalled();
+    function it_report_exception_on_kernel_response(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
+    {
         $this->setException($exception);
+        $notifier->reportException($exception)->shouldBeCalled();
         $this->onKernelResponse($event);
+    }
+
+    function it_clear_exception_after_report(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
+    {
+        $this->setException($exception);
+
+        $notifier->reportException($exception)->shouldBeCalled();
+        $this->onKernelResponse($event);
+
         $this->getException()->shouldReturn(null);
     }
 
-    public function it_skip_report_if_there_is_no_exception_on_kernel_response(
-        Notifier $notifier,
-        FilterResponseEvent $event
-    ) {
+    function it_skip_report_if_there_is_no_exception_on_kernel_response(Notifier $notifier, FilterResponseEvent $event)
+    {
         $this->setException(null);
         $notifier->reportException(Argument::any())->shouldNotBeCalled();
         $this->onKernelResponse($event);
     }
 
-    public function it_get_user_data_if_user_is_defined(
+    function it_get_user_data_if_user_is_defined(
         SecurityContextInterface $securityContext,
         TokenInterface $token,
         UserInterface $user
@@ -97,12 +101,12 @@ class RollbarListenerSpec extends ObjectBehavior
         ));
     }
 
-    public function it_get_user_data_if_user_is_not_defined()
+    function it_get_user_data_if_user_is_not_defined()
     {
         $this->getUserData()->shouldReturn(null);
     }
 
-    public function it_get_user_id_and_email(
+    function it_get_user_id_and_email(
         SecurityContextInterface $securityContext,
         TokenInterface $token,
         ExtendedUserInterface $user
@@ -125,7 +129,7 @@ class RollbarListenerSpec extends ObjectBehavior
 
 interface ExtendedUserInterface
 {
-    public function getId();
-    public function getEmail();
-    public function getUsername();
+    function getId();
+    function getEmail();
+    function getUsername();
 }
