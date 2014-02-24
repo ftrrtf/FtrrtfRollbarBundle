@@ -8,6 +8,7 @@ use Ftrrtf\Rollbar\Notifier;
 use Ftrrtf\Rollbar;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -58,6 +59,15 @@ class RollbarListenerSpec extends ObjectBehavior
         $event->getException()->willReturn($httpException);
         $this->onKernelException($event);
         $this->getException()->shouldReturn(null);
+    }
+
+    function it_report_exception_on_console_exception(Notifier $notifier, \Exception $exception, ConsoleExceptionEvent $event)
+    {
+        $this->setException($exception);
+        $event->getException()->willReturn($exception);
+
+        $notifier->reportException($exception)->shouldBeCalled();
+        $this->onConsoleException($event);
     }
 
     function it_report_exception_on_kernel_response(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)

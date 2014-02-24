@@ -4,6 +4,7 @@ namespace Ftrrtf\RollbarBundle\EventListener;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
 use Ftrrtf\Rollbar;
+use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -60,16 +61,6 @@ class RollbarListener
             });
     }
 
-    public function getException()
-    {
-        return $this->exception;
-    }
-
-    public function setException($exception)
-    {
-        $this->exception = $exception;
-    }
-
     /**
      * Register error handler
      *
@@ -92,6 +83,14 @@ class RollbarListener
         }
 
         $this->setException($event->getException());
+    }
+
+    /**
+     * @param ConsoleExceptionEvent $event
+     */
+    public function onConsoleException(ConsoleExceptionEvent $event)
+    {
+        $this->notifier->reportException($event->getException());
     }
 
     /**
@@ -137,6 +136,23 @@ class RollbarListener
         }
 
         return $userData;
+    }
+
+
+    /**
+     * @return \Exception
+     */
+    public function getException()
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param $exception
+     */
+    public function setException($exception)
+    {
+        $this->exception = $exception;
     }
 
 }
