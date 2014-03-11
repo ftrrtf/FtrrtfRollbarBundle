@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('notifier')
                     ->children()
+                        ->scalarNode('batched')->defaultFalse()->end()
                         ->scalarNode('access_token')->isRequired()->end()
                         ->arrayNode('transport')
                             ->addDefaultsIfNotSet()
