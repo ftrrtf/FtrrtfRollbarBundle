@@ -15,10 +15,10 @@
         <service id="ftrrtf_rollbar.error_handler" class="%ftrrtf_rollbar.error_handler.class%">
         </service>
 
-        <service id="ftrrtf_rollbar.environment" class="%ftrrtf_rollbar.environment.class%" scope="request">
+        <service id="ftrrtf_rollbar.environment" class="%ftrrtf_rollbar.environment.class%">
             <argument>%ftrrtf_rollbar.environment.options%</argument>
             <call method="setRequest">
-                <argument type="service" id="request" strict="false" />
+                <argument type="service" id="request" strict="false" on-invalid="ignore" />
             </call>
         </service>
 
