@@ -126,10 +126,9 @@ class RollbarListener
         $userData = array();
         $userData['id'] = method_exists($user, 'getId')
             ? $user->getId()
-            // id is required
-            : $userData['id'] = $user->getUsername();
+            : (string) $user;
 
-        $userData['username'] = $user->getUsername();
+        $userData['username'] = (string) $user;
 
         if (method_exists($user, 'getEmail')) {
             $userData['email'] = $user->getEmail();
