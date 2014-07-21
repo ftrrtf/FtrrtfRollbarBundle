@@ -11,14 +11,12 @@
         }
     ],
     "require" : {
-        "ext-curl" : "*",
         "php" : ">=5.3",
+        "symfony/symfony": ">=2.3,<3.0",
         "ftrrtf/rollbar-notifier": "dev-master"
     },
     "require-dev" : {
-        "phpspec/phpspec" : "dev-master",
-        "phpspec/symfony2-extension": "dev-master",
-        "knplabs/phpspec-welldone-extension": "dev-master"
+        "phpspec/phpspec" : "2.*"
     },
     "config": {
         "bin-dir": "bin"
