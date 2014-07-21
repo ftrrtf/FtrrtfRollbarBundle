@@ -22,7 +22,7 @@ class Environment extends BaseEnvironment
 
     /**
      * Cached values for request
-     * 
+     *
      * @return array|null
      */
     public function getRequestData()

@@ -26,10 +26,16 @@ class FtrrtfRollbarExtension extends Extension
 
         if (isset($config['notifier']['access_token'])) {
 
-            if (isset($config['notifier']['transport'])) {
-                switch ($config['notifier']['transport']) {
+            if (isset($config['notifier']['transport']['type'])) {
+                $transport = $config['notifier']['transport'];
+                switch ($transport['type']) {
+                    case 'agent':
+                        $container->setParameter('ftrrtf_rollbar.notifier.transport.agent_log_location', $transport['agent_log_location']);
+                        $loader->load('transport_agent.xml');
+                        break;
                     case 'curl':
                     default:
+                        $container->setParameter('ftrrtf_rollbar.notifier.transport.access_token', $transport['access_token']);
                         $loader->load('transport_curl.xml');
                 }
 

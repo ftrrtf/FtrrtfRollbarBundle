@@ -24,10 +24,8 @@
 
         <service id="ftrrtf_rollbar.notifier" class="%ftrrtf_rollbar.notifier.class%">
             <argument type="service" id="ftrrtf_rollbar.environment" strict="false"/>
+            <argument type="service" id="ftrrtf_rollbar.transport" />
             <argument>%ftrrtf_rollbar.notifier.options%</argument>
-            <call method="setTransport">
-                <argument type="service" id="ftrrtf_rollbar.transport" />
-            </call>
         </service>
 
         <service id="ftrrtf_rollbar.rollbar_listener" class="%ftrrtf_rollbar.rollbar_listener.class%">

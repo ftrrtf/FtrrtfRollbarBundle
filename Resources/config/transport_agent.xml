@@ -4,12 +4,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="ftrrtf_rollbar.transport.class">Ftrrtf\Rollbar\Transport\Curl</parameter>
+        <parameter key="ftrrtf_rollbar.transport.class">Ftrrtf\Rollbar\Transport\Agent</parameter>
     </parameters>
 
     <services>
         <service id="ftrrtf_rollbar.transport" class="%ftrrtf_rollbar.transport.class%">
-            <argument>%ftrrtf_rollbar.transport.curl.access_token%</argument>
+            <argument>%ftrrtf_rollbar.transport.agent_log_location%</argument>
         </service>
     </services>
 </container>
