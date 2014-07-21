@@ -9,7 +9,7 @@
 
     <services>
         <service id="ftrrtf_rollbar.transport" class="%ftrrtf_rollbar.transport.class%">
-            <argument>%ftrrtf_rollbar.transport.curl.access_token%</argument>
+            <argument>%ftrrtf_rollbar.transport.access_token%</argument>
         </service>
     </services>
 </container>

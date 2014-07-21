@@ -24,18 +24,25 @@ class FtrrtfRollbarExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if (isset($config['notifier']['access_token'])) {
-
+        if (isset($config['notifier'])) {
             if (isset($config['notifier']['transport']['type'])) {
                 $transport = $config['notifier']['transport'];
                 switch ($transport['type']) {
                     case 'agent':
-                        $container->setParameter('ftrrtf_rollbar.notifier.transport.agent_log_location', $transport['agent_log_location']);
+                        $container->setParameter('ftrrtf_rollbar.transport.agent_log_location', $transport['agent_log_location']);
                         $loader->load('transport_agent.xml');
+
+                        // Prepare log dir
+                        $logDir = $container->getParameterBag()->resolveValue($transport['agent_log_location']);
+                        if (!is_dir($logDir)) {
+                            if (false === @mkdir($logDir, 0777, true)) {
+                                throw new \RuntimeException(sprintf('Could not create log directory "%s".', $logDir));
+                            }
+                        }
                         break;
                     case 'curl':
                     default:
-                        $container->setParameter('ftrrtf_rollbar.notifier.transport.access_token', $transport['access_token']);
+                        $container->setParameter('ftrrtf_rollbar.transport.access_token', $transport['access_token']);
                         $loader->load('transport_curl.xml');
                 }
 

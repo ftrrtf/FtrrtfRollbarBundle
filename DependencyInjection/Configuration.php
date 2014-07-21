@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('notifier')
                     ->children()
                         ->scalarNode('batched')->defaultFalse()->end()
-                        ->scalarNode('batch_size')->default('50')->end()
+                        ->scalarNode('batch_size')->defaultValue('50')->end()
                         ->arrayNode('transport')
                             ->children()
                                 ->scalarNode('type')->defaultValue('curl')->end()
