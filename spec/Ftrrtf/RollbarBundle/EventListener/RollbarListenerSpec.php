@@ -6,6 +6,7 @@ use Ftrrtf\Rollbar\Environment;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
 use Ftrrtf\Rollbar;
+use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RollbarListenerSpec extends ObjectBehavior
 {
@@ -22,12 +24,13 @@ class RollbarListenerSpec extends ObjectBehavior
         Notifier $notifier,
         ErrorHandler $errorHandler,
         SecurityContextInterface $securityContext,
-        Environment $environment
+        Environment $environment,
+        UserHelper $userHelper
     ) {
         $notifier->getEnvironment()->willReturn($environment);
         $environment->setOption('person_callback', Argument::type('\Closure'))->shouldBeCalled();
 
-        $this->beConstructedWith($notifier, $errorHandler, $securityContext);
+        $this->beConstructedWith($notifier, $errorHandler, $securityContext, $userHelper);
     }
 
     function it_is_initializable()
@@ -93,77 +96,45 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->onKernelResponse($event);
     }
 
-    function it_get_user_data_if_user_is_a_string(
-        SecurityContextInterface $securityContext,
-        TokenInterface $token
-    ) {
-        $user = 'string_user';
-
-        $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
-        $securityContext->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $this->getUserData()->shouldReturn(array(
-            'id' => 'string_user',
-            'username' => 'string_user',
-        ));
-    }
-
-
-    function it_get_user_data_if_user_is_simple_token_user(
+    function it_should_skip_user_data_if_user_is_not_defined(
         SecurityContextInterface $securityContext,
         TokenInterface $token,
-        TokenUserInterface $user
+        UserHelper $userHelper
     ) {
         $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
         $securityContext->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
+        $token->getUser()->willReturn(null);
 
-        $user->__toString()->will(function() use ($user){
-            return 'username';
-        });
+        $userHelper->buildUserData(Argument::any())->shouldNotBeCalled();
 
-        $this->getUserData()->shouldReturn(array(
-            'id' => 'username',
-            'username' => 'username',
-        ));
+        $this->getUserData()->shouldBeNull();
     }
 
-    function it_get_user_data_if_user_is_not_defined()
-    {
-        $this->getUserData()->shouldReturn(null);
-    }
-
-    function it_get_user_data_if_user_with_id_and_email(
+    function it_should_skip_user_data_if_user_is_anonymous(
         SecurityContextInterface $securityContext,
         TokenInterface $token,
-        ExtendedUserInterface $user
+        UserHelper $userHelper
+    ) {
+        $securityContext->getToken()->willReturn($token);
+        $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(false);
+
+        $userHelper->buildUserData(Argument::any())->shouldNotBeCalled();
+
+        $this->getUserData()->shouldBeNull();
+    }
+
+    function it_get_user_data_if_user_is_defined(
+        SecurityContextInterface $securityContext,
+        TokenInterface $token,
+        UserInterface $user,
+        UserHelper $userHelper
     ) {
         $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $user->getId()->willReturn(123);
-        $user->getEmail()->willReturn('mail@host');
-        $user->__toString()->willReturn('username');
+        $userHelper->buildUserData($user)->shouldBeCalled();
 
-        $this->getUserData()->shouldReturn(array(
-            'id'       => 123,
-            'username' => 'username',
-            'email'    => 'mail@host',
-        ));
+        $this->getUserData();
     }
-}
-
-interface TokenUserInterface
-{
-    function getUsername();
-    function __toString();
-}
-
-interface ExtendedUserInterface
-{
-    function getId();
-    function getEmail();
-    function __toString();
 }

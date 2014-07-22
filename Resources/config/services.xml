@@ -8,6 +8,7 @@
         <parameter key="ftrrtf_rollbar.environment.class">Ftrrtf\RollbarBundle\Rollbar\Environment</parameter>
         <parameter key="ftrrtf_rollbar.error_handler.class">Ftrrtf\Rollbar\ErrorHandler</parameter>
         <parameter key="ftrrtf_rollbar.rollbar_listener.class">Ftrrtf\RollbarBundle\EventListener\RollbarListener</parameter>
+        <parameter key="ftrrtf_rollbar.helper.user.class">Ftrrtf\RollbarBundle\Helper\UserHelper</parameter>
         <parameter key="ftrrtf_rollbar.twig_extension.class">Ftrrtf\RollbarBundle\Twig\RollbarExtension</parameter>
     </parameters>
 
@@ -28,10 +29,14 @@
             <argument>%ftrrtf_rollbar.notifier.options%</argument>
         </service>
 
+        <service id="ftrrtf_rollbar.helper.user" class="%ftrrtf_rollbar.helper.user.class%">
+        </service>
+
         <service id="ftrrtf_rollbar.rollbar_listener" class="%ftrrtf_rollbar.rollbar_listener.class%">
             <argument type="service" id="ftrrtf_rollbar.notifier"/>
             <argument type="service" id="ftrrtf_rollbar.error_handler"/>
             <argument type="service" id="security.context"/>
+            <argument type="service" id="ftrrtf_rollbar.helper.user"/>
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-100" />
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="-200" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />

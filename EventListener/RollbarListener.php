@@ -4,6 +4,7 @@ namespace Ftrrtf\RollbarBundle\EventListener;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
 use Ftrrtf\Rollbar;
+use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -37,6 +38,10 @@ class RollbarListener
      * @var ErrorHandler
      */
     private $errorHandler;
+    /**
+     * @var UserHelper
+     */
+    private $userHelper;
 
     /**
      * Init
@@ -44,15 +49,18 @@ class RollbarListener
      * @param Notifier                 $notifier
      * @param ErrorHandler             $errorHandler
      * @param SecurityContextInterface $securityContext
+     * @param UserHelper               $userHelper
      */
     public function __construct(
         Notifier $notifier,
         ErrorHandler $errorHandler,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        UserHelper $userHelper
     ) {
         $this->notifier        = $notifier;
         $this->errorHandler    = $errorHandler;
         $this->securityContext = $securityContext;
+        $this->userHelper      = $userHelper;
 
         $self = $this;
         $this->notifier->getEnvironment()
@@ -123,18 +131,7 @@ class RollbarListener
             return null;
         }
 
-        $userData = array();
-        $userData['id'] = method_exists($user, 'getId')
-            ? $user->getId()
-            : (string) $user;
-
-        $userData['username'] = (string) $user;
-
-        if (method_exists($user, 'getEmail')) {
-            $userData['email'] = $user->getEmail();
-        }
-
-        return $userData;
+        return $this->userHelper->buildUserData($user);
     }
 
 
