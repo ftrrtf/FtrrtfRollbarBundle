@@ -4,49 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="ftrrtf_rollbar.notifier.class">Ftrrtf\Rollbar\Notifier</parameter>
-        <parameter key="ftrrtf_rollbar.environment.class">Ftrrtf\RollbarBundle\Rollbar\Environment</parameter>
-        <parameter key="ftrrtf_rollbar.error_handler.class">Ftrrtf\Rollbar\ErrorHandler</parameter>
-        <parameter key="ftrrtf_rollbar.rollbar_listener.class">Ftrrtf\RollbarBundle\EventListener\RollbarListener</parameter>
         <parameter key="ftrrtf_rollbar.helper.user.class">Ftrrtf\RollbarBundle\Helper\UserHelper</parameter>
-        <parameter key="ftrrtf_rollbar.twig_extension.class">Ftrrtf\RollbarBundle\Twig\RollbarExtension</parameter>
     </parameters>
 
     <services>
-        <service id="ftrrtf_rollbar.error_handler" class="%ftrrtf_rollbar.error_handler.class%">
-        </service>
-
-        <service id="ftrrtf_rollbar.environment" class="%ftrrtf_rollbar.environment.class%">
-            <argument>%ftrrtf_rollbar.environment.options%</argument>
-            <call method="setRequest">
-                <argument type="service" id="request" strict="false" on-invalid="ignore" />
-            </call>
-        </service>
-
-        <service id="ftrrtf_rollbar.notifier" class="%ftrrtf_rollbar.notifier.class%">
-            <argument type="service" id="ftrrtf_rollbar.environment" strict="false"/>
-            <argument type="service" id="ftrrtf_rollbar.transport" />
-            <argument>%ftrrtf_rollbar.notifier.options%</argument>
-        </service>
-
         <service id="ftrrtf_rollbar.helper.user" class="%ftrrtf_rollbar.helper.user.class%">
         </service>
-
-        <service id="ftrrtf_rollbar.rollbar_listener" class="%ftrrtf_rollbar.rollbar_listener.class%">
-            <argument type="service" id="ftrrtf_rollbar.notifier"/>
-            <argument type="service" id="ftrrtf_rollbar.error_handler"/>
-            <argument type="service" id="security.context"/>
-            <argument type="service" id="ftrrtf_rollbar.helper.user"/>
-            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-100" />
-            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="-200" />
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
-            <tag name="kernel.event_listener" event="console.exception" method="onConsoleException" />
-        </service>
-
-        <!--<service id="ftrrtf_rollbar.twig_extension" class="%ftrrtf_rollbar.twig_extension.class%">-->
-            <!--<argument>%ftrrtf_rollbar.notifier.options%</argument>-->
-            <!--<argument>%ftrrtf_rollbar.environment.options%</argument>-->
-            <!--<tag name="twig.extension" />-->
-        <!--</service>-->
     </services>
 </container>

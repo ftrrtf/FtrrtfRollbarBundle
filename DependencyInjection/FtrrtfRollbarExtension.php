@@ -25,8 +25,18 @@ class FtrrtfRollbarExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if (isset($config['notifier'])) {
-            if (isset($config['notifier']['transport']['type'])) {
-                $transport = $config['notifier']['transport'];
+            $loader->load('services.xml');
+            $container->setParameter('ftrrtf_rollbar.environment.options', $config['environment']);
+        }
+
+        if (isset($config['notifier']['client'])) {
+            $container->setParameter('ftrrtf_rollbar.notifier.client.options', $config['notifier']['client']);
+            $loader->load('client.xml');
+        }
+
+        if (isset($config['notifier']['server'])) {
+            if (isset($config['notifier']['server']['transport']['type'])) {
+                $transport = $config['notifier']['server']['transport'];
                 switch ($transport['type']) {
                     case 'agent':
                         $container->setParameter('ftrrtf_rollbar.transport.agent_log_location', $transport['agent_log_location']);
@@ -46,13 +56,12 @@ class FtrrtfRollbarExtension extends Extension
                         $loader->load('transport_curl.xml');
                 }
 
-                unset($config['notifier']['transport']);
+                unset($config['notifier']['server']['transport']);
             }
 
-            $container->setParameter('ftrrtf_rollbar.notifier.options', $config['notifier']);
-            $container->setParameter('ftrrtf_rollbar.environment.options', $config['environment']);
+            $container->setParameter('ftrrtf_rollbar.notifier.server.options', $config['notifier']['server']);
 
-            $loader->load('services.xml');
+            $loader->load('server.xml');
         }
     }
 

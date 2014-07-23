@@ -18,6 +18,9 @@
     "require-dev" : {
         "phpspec/phpspec" : "2.*"
     },
+    "suggest": {
+        "twig/extensions": "~1.1 – For twig rollbarjs extension"
+    },
     "config": {
         "bin-dir": "bin"
     },
