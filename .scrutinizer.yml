@@ -1,3 +1,26 @@
 filter:
     excluded_paths:
         - spec/*
+        - vendor/*
+tools:
+    php_code_sniffer:
+        extensions:
+            - php
+        command: phpcs
+        enabled: true
+        config:
+            standard: PSR2
+    php_code_coverage:
+        test_command: bin/phpspec run
+    php_mess_detector: true
+    php_cpd:
+        enabled: true
+        command: phpcpd
+        min_lines: 5
+        min_tokens: 70
+        names:
+            - '*.php'
+    php_pdepend: true
+    php_loc: true
+    php_analyzer: true
+    sensiolabs_security_checker: true
