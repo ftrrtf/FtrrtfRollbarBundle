@@ -46,9 +46,9 @@ class Environment extends BaseEnvironment
     }
 
     /**
-     * @param Request $request
+     * @param mixed $request
      */
-    public function setRequest(Request $request)
+    public function setRequest($request)
     {
         $this->request = $request;
     }

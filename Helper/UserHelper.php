@@ -2,7 +2,8 @@
 
 namespace Ftrrtf\RollbarBundle\Helper;
 
-class UserHelper {
+class UserHelper
+{
 
     /**
      * Get current user info

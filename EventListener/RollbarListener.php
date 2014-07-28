@@ -149,5 +149,4 @@ class RollbarListener
     {
         $this->exception = $exception;
     }
-
 }
