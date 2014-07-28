@@ -3,7 +3,6 @@
 namespace spec\Ftrrtf\RollbarBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class UserHelperSpec extends ObjectBehavior
 {

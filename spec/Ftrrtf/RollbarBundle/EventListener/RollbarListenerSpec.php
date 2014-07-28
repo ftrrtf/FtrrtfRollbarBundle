@@ -5,7 +5,6 @@ namespace spec\Ftrrtf\RollbarBundle\EventListener;
 use Ftrrtf\Rollbar\Environment;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
-use Ftrrtf\Rollbar;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

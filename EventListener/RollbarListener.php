@@ -3,7 +3,6 @@ namespace Ftrrtf\RollbarBundle\EventListener;
 
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
-use Ftrrtf\Rollbar;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -144,7 +143,7 @@ class RollbarListener
     }
 
     /**
-     * @param $exception
+     * @param \Exception|null $exception
      */
     public function setException($exception)
     {
