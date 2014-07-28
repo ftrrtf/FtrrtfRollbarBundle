@@ -15,7 +15,7 @@ Symfony2 Bundle for rollbar.com
 
     "require" :  {
         // ...
-        "ftrrtf/rollbar-bundle": "v1.0",
+        "ftrrtf/rollbar-bundle": "v1.0.0",
     }
 
 ### Register the bundle in your application
