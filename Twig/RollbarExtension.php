@@ -79,6 +79,16 @@ class RollbarExtension extends \Twig_Extension
             $config['payload']['person'] = $this->userHelper->buildUserData($user);
         }
 
+        if ($this->notifierOptions['source_map_enabled']) {
+            $config['payload']['client'] = array(
+                'javascript' => array(
+                    'source_map_enabled' => $this->notifierOptions['source_map_enabled'],
+                    'code_version' => $this->notifierOptions['code_version'],
+                    'guess_uncaught_frames' => $this->notifierOptions['guess_uncaught_frames']
+                )
+            );
+        }
+
         $config = json_encode($config);
 
         return <<<END_HTML
