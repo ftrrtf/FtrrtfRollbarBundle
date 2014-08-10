@@ -13,7 +13,7 @@
     "require" : {
         "php" : ">=5.3",
         "symfony/framework-bundle": ">=2.3,<3.0",
-        "ftrrtf/rollbar-notifier": "dev-master"
+        "ftrrtf/rollbar-notifier": "~1.0"
     },
     "require-dev" : {
         "phpspec/phpspec" : "2.*"
