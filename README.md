@@ -15,7 +15,7 @@ Symfony2 Bundle for rollbar.com
 
     "require" :  {
         // ...
-        "ftrrtf/rollbar-bundle": "v1.0.0",
+        "ftrrtf/rollbar-bundle": "v0.4",
     }
 
 ### Register the bundle in your application
@@ -51,7 +51,7 @@ ftrrtf_rollbar:
             access_token: %rollbar_client_access_token%
             # optional 
             source_map_enabled: true,
-            code_version: "some version string, such as a version number or git sha",
+            code_version: "some version string, such as a version number or git sha"
             guess_uncaught_frames: true
     environment:
         environment: "%rollbar_environment%[%kernel.environment%]"
