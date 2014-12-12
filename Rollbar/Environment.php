@@ -60,7 +60,7 @@ class Environment extends BaseEnvironment
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->replaceDefaults(
+        $resolver->setDefaults(
             array(
                 'framework' => Kernel::VERSION
             )
