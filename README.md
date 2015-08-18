@@ -53,6 +53,10 @@ ftrrtf_rollbar:
             source_map_enabled: true
             code_version: "some version string, such as a version number or git sha"
             guess_uncaught_frames: true
+            # optional - if not passed, window.location.origin will be only allowed host
+            # allowed_js_hosts:
+            #   - http://myhost.mydomain.com
+            #   - http://myhost2.mydomain.com
     environment:
         environment: "%rollbar_environment%[%kernel.environment%]"
 ```
