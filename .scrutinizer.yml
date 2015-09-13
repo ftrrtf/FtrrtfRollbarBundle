@@ -1,26 +1,62 @@
+build:
+    tests:
+        before:
+            - 'bin/phpspec run'
+tools:
+    php_sim: true
+    php_pdepend: true
+    php_analyzer: true
+checks:
+    php:
+        useless_calls: true
+        unused_variables: true
+        unused_properties: true
+        unused_parameters: true
+        unused_methods: true
+        unreachable_code: true
+        too_many_arguments: true
+        no_unnecessary_if: true
+        no_unnecessary_final_modifier: true
+        no_empty_statements: true
+        avoid_useless_overridden_methods: true
+        duplication: true
+        security_vulnerabilities: true
+        avoid_usage_of_logical_operators: true
+        no_goto: true
+        non_commented_empty_catch_block: true
+        overriding_private_members: true
+        phpunit_assertions: true
+        switch_fallthrough_commented: true
+        return_doc_comments: true
+        return_doc_comment_if_not_inferrable: true
+        parameter_doc_comments: true
+        param_doc_comment_if_not_inferrable: true
+        more_specific_types_in_doc_comments: true
+        fix_doc_comments: true
+        no_unnecessary_function_call_in_for_loop: true
+        avoid_unnecessary_concatenation: true
+        deprecated_code_usage: true
+        no_debug_code: true
+        code_rating: true
+        use_self_instead_of_fqcn: true
+        uppercase_constants: true
+        simplify_boolean_return: true
+        remove_extra_empty_lines: true
+        properties_in_camelcaps: true
+        prefer_while_loop_over_for_loop: true
+        parameters_in_camelcaps: true
+        optional_parameters_at_the_end: true
+        no_new_line_at_end_of_file: false
+        line_length:
+            max_length: '120'
+        function_in_camel_caps: true
+        fix_use_statements:
+            remove_unused: true
+            preserve_multiple: false
+            preserve_blanklines: false
+            order_alphabetically: true
+        encourage_single_quotes: true
 filter:
     excluded_paths:
         - spec/*
         - vendor/*
-tools:
-    php_code_sniffer:
-        extensions:
-            - php
-        command: phpcs
-        enabled: true
-        config:
-            standard: PSR2
-    php_code_coverage:
-        test_command: bin/phpspec run
-    php_mess_detector: true
-    php_cpd:
-        enabled: true
-        command: phpcpd
-        min_lines: 5
-        min_tokens: 70
-        names:
-            - '*.php'
-    php_pdepend: true
-    php_loc: true
-    php_analyzer: true
-    sensiolabs_security_checker: true
