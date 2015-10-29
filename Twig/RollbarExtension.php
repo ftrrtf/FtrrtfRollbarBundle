@@ -128,8 +128,24 @@ END_HTML;
         return false;
     }
 
+    function isLogMessage(payload) {
+        try {
+            if (payload.data.body.message !== undefined) {
+                return true;
+            }
+        } catch (e) {
+        }
+
+        return false;
+    }
+
     function ignoreRemoteUncaught(isUncaught, args, payload) {
         try {
+            //this prevents breaking simple string reporting
+            if (isLogMessage(payload)) {
+                return false;
+            }
+
             var filename = payload.data.body.trace.frames[0].filename;
             if (isUncaught && !isFromAllowedHosts(filename)) {
                 return true;
