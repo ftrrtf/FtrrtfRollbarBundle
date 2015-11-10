@@ -66,6 +66,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('root_dir')->defaultValue('')->end()
                         ->scalarNode('environment')->defaultValue('unknown')->end()
                         ->scalarNode('framework')->end()
+                        ->scalarNode('code_version')->defaultValue('')->end()
                     ->end()
                 ->end()
             ->end();
