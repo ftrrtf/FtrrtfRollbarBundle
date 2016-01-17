@@ -6,6 +6,5 @@ class Application
 {
     public function getUser()
     {
-
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ftrrtf\RollbarBundle\EventListener;
 
 use Ftrrtf\Rollbar\ErrorHandler;
@@ -7,14 +8,12 @@ use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Class RollbarListener
- *
- * @package Ftrrtf\RollbarBundle\EventListener
+ * Rollbar framework Listener.
  */
 class RollbarListener
 {
@@ -43,7 +42,7 @@ class RollbarListener
     private $userHelper;
 
     /**
-     * Init
+     * Init.
      *
      * @param Notifier                 $notifier
      * @param ErrorHandler             $errorHandler
@@ -56,20 +55,23 @@ class RollbarListener
         SecurityContextInterface $securityContext,
         UserHelper $userHelper
     ) {
-        $this->notifier        = $notifier;
-        $this->errorHandler    = $errorHandler;
+        $this->notifier = $notifier;
+        $this->errorHandler = $errorHandler;
         $this->securityContext = $securityContext;
-        $this->userHelper      = $userHelper;
+        $this->userHelper = $userHelper;
 
         $self = $this;
         $this->notifier->getEnvironment()
-            ->setOption('person_callback', function() use ($self) {
-                return $self->getUserData();
-            });
+            ->setOption(
+                'person_callback',
+                function () use ($self) {
+                    return $self->getUserData();
+                }
+            );
     }
 
     /**
-     * Register error handler
+     * Register error handler.
      *
      * @param GetResponseEvent $event
      */
@@ -80,6 +82,8 @@ class RollbarListener
     }
 
     /**
+     * Save exception.
+     *
      * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -101,7 +105,7 @@ class RollbarListener
     }
 
     /**
-     * Wrap exception with additional info
+     * Wrap exception with additional info.
      *
      * @param FilterResponseEvent $event
      */
@@ -114,7 +118,7 @@ class RollbarListener
     }
 
     /**
-     * Get current user info
+     * Get current user info.
      *
      * @return null|array
      */
@@ -132,7 +136,6 @@ class RollbarListener
 
         return $this->userHelper->buildUserData($user);
     }
-
 
     /**
      * @return \Exception

@@ -5,9 +5,7 @@ namespace Ftrrtf\RollbarBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class FtrrtfRollbarBundle
- *
- * @package Ftrrtf\RollbarBundle
+ * Rollbar integration bundle.
  */
 class FtrrtfRollbarBundle extends Bundle
 {

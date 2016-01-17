@@ -4,11 +4,10 @@ namespace Ftrrtf\RollbarBundle\Helper;
 
 class UserHelper
 {
-
     /**
-     * Get current user info
+     * Get current user info.
      *
-     * @param mixed $user
+     * @param mixed|object $user
      *
      * @return null|array
      */
