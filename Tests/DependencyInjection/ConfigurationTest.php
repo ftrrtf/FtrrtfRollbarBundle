@@ -23,7 +23,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $processor = new Processor();
         $actualConfig = $processor->processConfiguration(
-            new Configuration(), array($options)
+            new Configuration(),
+            array($options)
         );
         static::assertEquals($expectedConfig, $actualConfig);
     }
@@ -37,7 +38,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'server' => array(
                             'transport' => array(
                                 'type' => 'curl',
-                                'access_token' => 'token'
+                                'access_token' => 'token',
                             ),
                         ),
                     ),
@@ -49,7 +50,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'batch_size' => '50',
                             'transport' => array(
                                 'type' => 'curl',
-                                'access_token' => 'token'
+                                'access_token' => 'token',
                             ),
                         ),
                     ),
@@ -61,7 +62,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'server' => array(
                             'transport' => array(
                                 'type' => 'agent',
-                                'agent_log_location' => '/path/to/log'
+                                'agent_log_location' => '/path/to/log',
                             ),
                         ),
                     ),
@@ -73,17 +74,17 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'batch_size' => '50',
                             'transport' => array(
                                 'type' => 'agent',
-                                'agent_log_location' => '/path/to/log'
+                                'agent_log_location' => '/path/to/log',
                             ),
                         ),
-                    )
-                )
+                    ),
+                ),
             ),
             'client js configuration' => array(
                 array(
                     'notifier' => array(
                         'client' => array(
-                            'access_token' => 'token'
+                            'access_token' => 'token',
                         ),
                     ),
                 ),
@@ -104,13 +105,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'notifier' => array(
                         'client' => array(
-                            'access_token' => 'token'
-                        )
+                            'access_token' => 'token',
+                        ),
                     ),
                     'environment' => array(
                         'environment' => 'production',
                         'branch' => 'master',
-                        'code_version' => '12345'
+                        'code_version' => '12345',
                     ),
                 ),
                 array(
@@ -128,9 +129,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'environment' => 'production',
                         'branch' => 'master',
                         'root_dir' => '',
-                        'code_version' => '12345'
+                        'code_version' => '12345',
                     ),
-                )
+                ),
             ),
         );
     }
