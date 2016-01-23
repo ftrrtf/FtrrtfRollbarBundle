@@ -1,8 +1,8 @@
 build:
     tests:
         before:
-            - "composer self-update"
-            - 'vendor/bin/phpspec run'
+            - sudo composer self-update && composer --version
+            - vendor/bin/phpspec run
 tools:
     php_sim: true
     php_pdepend: true
