@@ -60,3 +60,5 @@ filter:
     excluded_paths:
         - spec/*
         - vendor/*
+tools:
+    external_code_coverage: true
