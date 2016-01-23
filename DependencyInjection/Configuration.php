@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('notifier')
+                ->isRequired()
                     ->children()
                         ->arrayNode('server')
                             ->children()
