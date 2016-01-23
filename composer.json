@@ -1,22 +1,23 @@
 {
-    "name" : "ftrrtf/rollbar-bundle",
-    "description" : "Symfony2 Bundle for rollbar.com",
-    "keywords" : ["rollbar", "errors", "symfony2"],
-    "license" : "MIT",
-    "type" : "symfony-bundle",
-    "authors" : [
+    "name": "ftrrtf/rollbar-bundle",
+    "description": "Symfony2 Bundle for rollbar.com",
+    "keywords": ["rollbar", "errors", "symfony2"],
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "authors": [
         {
-            "name" : "Valeriy Rabievskiy",
-            "email" : "dev@ftrrtf.com"
+            "name": "Valeriy Rabievskiy",
+            "email": "dev@ftrrtf.com"
         }
     ],
-    "require" : {
-        "php" : ">=5.3",
+    "require": {
+        "php": ">=5.3",
         "symfony/framework-bundle": ">=2.3,<3.0",
         "ftrrtf/rollbar-notifier": "~1.0"
     },
-    "require-dev" : {
-        "phpspec/phpspec" : "2.*",
+    "require-dev": {
+        "phpunit/phpunit": "^5.1",
+        "phpspec/phpspec": "2.*",
         "twig/extensions": "^1.3"
     },
     "suggest": {
@@ -25,10 +26,13 @@
     "config": {
         "bin-dir": "bin"
     },
-    "autoload" : {
-        "psr-0" : {
-            "Ftrrtf\\RollbarBundle\\" : ""
-        }
+    "autoload": {
+        "psr-4": {
+            "Ftrrtf\\RollbarBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
-    "target-dir" : "Ftrrtf/RollbarBundle"
+    "target-dir": "Ftrrtf/RollbarBundle"
 }
