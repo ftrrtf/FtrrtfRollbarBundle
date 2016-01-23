@@ -3,12 +3,19 @@ build:
         before:
             - sudo composer self-update && composer --version
             - vendor/bin/phpspec run
+build:
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=phpunit-coverage.xml'
+                coverage:
+                    file: 'phpunit-coverage.xml'
+                    format: 'php-clover'
+
 tools:
     php_sim: true
     php_pdepend: true
     php_analyzer: true
-    external_code_coverage:
-        timeout: 3600
 checks:
     php:
         useless_calls: true
