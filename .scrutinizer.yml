@@ -1,11 +1,14 @@
 build:
     tests:
         before:
+            - "composer self-update"
             - 'vendor/bin/phpspec run'
 tools:
     php_sim: true
     php_pdepend: true
     php_analyzer: true
+    external_code_coverage:
+        timeout: 3600
 checks:
     php:
         useless_calls: true
@@ -60,5 +63,3 @@ filter:
     excluded_paths:
         - spec/*
         - vendor/*
-tools:
-    external_code_coverage: true
