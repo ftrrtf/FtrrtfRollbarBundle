@@ -33,6 +33,5 @@
         "exclude-from-classmap": [
             "/Tests/"
         ]
-    },
-    "target-dir": "Ftrrtf/RollbarBundle"
+    }
 }
