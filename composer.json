@@ -23,9 +23,6 @@
     "suggest": {
         "twig/extensions": "~1.1 – For twig rollbarjs extension"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Ftrrtf\\RollbarBundle\\": ""

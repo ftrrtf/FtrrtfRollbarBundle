@@ -1,7 +1,7 @@
 build:
     tests:
         before:
-            - 'bin/phpspec run'
+            - 'vendor/bin/phpspec run'
 tools:
     php_sim: true
     php_pdepend: true
