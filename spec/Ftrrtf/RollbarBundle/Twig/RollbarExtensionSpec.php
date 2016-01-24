@@ -2,7 +2,7 @@
 
 namespace spec\Ftrrtf\RollbarBundle\Twig;
 
-use Ftrrtf\RollbarBundle\Faker\Application;
+use Ftrrtf\RollbarBundle\Tests\Fake\Application;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Ftrrtf\RollbarBundle\Twig\RollbarExtension;
 use PhpSpec\ObjectBehavior;

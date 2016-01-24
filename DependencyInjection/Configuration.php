@@ -62,6 +62,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('environment')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('branch')->defaultValue('master')->end()
                         ->scalarNode('root_dir')->defaultValue('')->end()

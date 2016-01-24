@@ -1,0 +1,23 @@
+ftrrtf_rollbar:
+    notifier:
+        server:
+            batched: true
+            batch_size: 50
+            transport:
+                type: curl
+                access_token: %rollbar_server_access_token%
+        client:
+            access_token: %rollbar_client_access_token%
+            source_map_enabled: true
+            code_version: somehash
+            guess_uncaught_frames: true
+            rollbarjs_version: v1.7
+            allowed_js_hosts:
+                - http://myhost.mydomain.com
+                - http://myhost2.mydomain.com
+    environment:
+        environment: "%rollbar_environment%[%kernel.environment%]"
+        branch: feature
+        root_dir: path/to
+        framework: sf
+        code_version: somehash

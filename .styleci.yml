@@ -10,3 +10,4 @@ disabled:
 finder:
   exclude:
     - "spec"
+    - "Tests"

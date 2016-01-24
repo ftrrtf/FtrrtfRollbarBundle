@@ -70,3 +70,4 @@ filter:
     excluded_paths:
         - spec/*
         - vendor/*
+        - Tests/*
