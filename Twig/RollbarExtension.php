@@ -5,9 +5,7 @@ namespace Ftrrtf\RollbarBundle\Twig;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 
 /**
- * Class RollbarExtension
- *
- * @package Ftrrtf\RollbarBundle\Twig
+ * Rollbar twig extension.
  */
 class RollbarExtension extends \Twig_Extension
 {
@@ -27,15 +25,15 @@ class RollbarExtension extends \Twig_Extension
     private $userHelper;
 
     /**
-     * @param            $notifierOptions
-     * @param            $environmentOptions
+     * @param array      $notifierOptions
+     * @param array      $environmentOptions
      * @param UserHelper $userHelper
      */
     public function __construct($notifierOptions, $environmentOptions, UserHelper $userHelper)
     {
-        $this->notifierOptions    = $notifierOptions;
+        $this->notifierOptions = $notifierOptions;
         $this->environmentOptions = $environmentOptions;
-        $this->userHelper         = $userHelper;
+        $this->userHelper = $userHelper;
     }
 
     /**
@@ -51,9 +49,9 @@ class RollbarExtension extends \Twig_Extension
                 'getInitRollbarCode',
                 array(
                     'needs_context' => true,
-                    'is_safe' => array('html')
+                    'is_safe' => array('html'),
                 )
-            )
+            ),
         );
     }
 
@@ -70,8 +68,8 @@ class RollbarExtension extends \Twig_Extension
             'accessToken' => $accessToken,
             'captureUncaught' => true,
             'payload' => array(
-                'environment' => $this->environmentOptions['environment']
-            )
+                'environment' => $this->environmentOptions['environment'],
+            ),
         );
 
         $user = $context['app']->getUser();
@@ -84,8 +82,8 @@ class RollbarExtension extends \Twig_Extension
                 'javascript' => array(
                     'source_map_enabled' => $this->notifierOptions['source_map_enabled'],
                     'code_version' => $this->notifierOptions['code_version'],
-                    'guess_uncaught_frames' => $this->notifierOptions['guess_uncaught_frames']
-                )
+                    'guess_uncaught_frames' => $this->notifierOptions['guess_uncaught_frames'],
+                ),
             );
         }
 
@@ -105,6 +103,8 @@ END_HTML;
     }
 
     /**
+     * Configure and return JS for "ignore errors" feature.
+     *
      * @return string
      */
     protected function getCheckIgnoreConfig()
@@ -161,7 +161,6 @@ END_HTML;
     Rollbar.configure({checkIgnore: ignoreRemoteUncaught});
 })(Rollbar);
 END_HTML;
-
     }
 
     /**

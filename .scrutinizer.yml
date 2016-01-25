@@ -1,7 +1,17 @@
 build:
     tests:
         before:
-            - 'bin/phpspec run'
+            - sudo composer self-update && composer --version
+            - vendor/bin/phpspec run
+build:
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=phpunit-coverage.xml'
+                coverage:
+                    file: 'phpunit-coverage.xml'
+                    format: 'php-clover'
+
 tools:
     php_sim: true
     php_pdepend: true
@@ -60,3 +70,4 @@ filter:
     excluded_paths:
         - spec/*
         - vendor/*
+        - Tests/*

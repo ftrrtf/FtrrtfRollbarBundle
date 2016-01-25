@@ -1,0 +1,6 @@
+ftrrtf_rollbar:
+    notifier:
+        server:
+            transport:
+                type: agent
+                agent_log_location: %kernel.logs_dir%/%kernel.environment%.rollbar

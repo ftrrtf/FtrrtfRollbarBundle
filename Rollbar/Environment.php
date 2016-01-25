@@ -8,9 +8,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class Request
- *
- * @package Ftrrtf\Rollbar
+ * Configure Symfony specific env.
  */
 class Environment extends BaseEnvironment
 {
@@ -20,7 +18,7 @@ class Environment extends BaseEnvironment
     protected $request;
 
     /**
-     * Cached values for request
+     * Cached values for request.
      *
      * @return array|null
      */
@@ -46,7 +44,7 @@ class Environment extends BaseEnvironment
     }
 
     /**
-     * @param mixed $request
+     * @param Request|null $request
      */
     public function setRequest($request)
     {
@@ -62,7 +60,7 @@ class Environment extends BaseEnvironment
 
         $resolver->setDefaults(
             array(
-                'framework' => Kernel::VERSION
+                'framework' => Kernel::VERSION,
             )
         );
     }

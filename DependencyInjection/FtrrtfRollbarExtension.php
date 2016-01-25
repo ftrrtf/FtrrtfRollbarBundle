@@ -2,20 +2,18 @@
 
 namespace Ftrrtf\RollbarBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * FtrrtfRollbarExtension.
  */
 class FtrrtfRollbarExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -39,16 +37,14 @@ class FtrrtfRollbarExtension extends Extension
                 $transport = $config['notifier']['server']['transport'];
                 switch ($transport['type']) {
                     case 'agent':
-                        $container->setParameter('ftrrtf_rollbar.transport.agent_log_location', $transport['agent_log_location']);
+                        $container->setParameter(
+                            'ftrrtf_rollbar.transport.agent_log_location',
+                            $transport['agent_log_location']
+                        );
                         $loader->load('transport_agent.xml');
-
-                        // Prepare log dir
-                        $logDir = $container->getParameterBag()->resolveValue($transport['agent_log_location']);
-                        if (!is_dir($logDir)) {
-                            if (false === @mkdir($logDir, 0777, true)) {
-                                throw new \RuntimeException(sprintf('Could not create log directory "%s".', $logDir));
-                            }
-                        }
+                        $this->prepareLogsDir(
+                            $container->getParameterBag()->resolveValue($transport['agent_log_location'])
+                        );
                         break;
                     case 'curl':
                     default:
@@ -71,5 +67,23 @@ class FtrrtfRollbarExtension extends Extension
     public function getAlias()
     {
         return 'ftrrtf_rollbar';
+    }
+
+    /**
+     * Create logs dir if does not exist.
+     *
+     * @param $logsDir
+     *
+     * @throws \RuntimeException
+     */
+    private function prepareLogsDir($logsDir)
+    {
+        if (!is_dir($logsDir)) {
+            if (false === @mkdir($logsDir, 0777, true) && !is_dir($logsDir)) {
+                throw new \RuntimeException(sprintf("Unable to create the logs directory (%s)\n", $logsDir));
+            }
+        } elseif (!is_writable($logsDir)) {
+            throw new \RuntimeException(sprintf("Unable to write in the logs directory (%s)\n", $logsDir));
+        }
     }
 }
