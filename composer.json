@@ -11,18 +11,18 @@
         }
     ],
     "require": {
-        "php": ">=5.3",
-        "symfony/symfony": "^2.3",
-        "ftrrtf/rollbar-notifier": "~1.0"
+        "php": ">=5.5.9",
+        "symfony/symfony": "^2.7.3|^3.0",
+        "ftrrtf/rollbar-notifier": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.8",
         "phpspec/phpspec": "^2.4",
-        "twig/extensions": "^1.3",
+        "symfony/twig-bundle": "^2.7.3|^3.0",
         "mikey179/vfsStream": "^1.6"
     },
     "suggest": {
-        "twig/extensions": "~1.1 – For twig rollbarjs extension"
+        "symfony/twig-bundle": "Enable rollbarjs twig helpers"
     },
     "autoload": {
         "psr-4": {
