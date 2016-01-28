@@ -3,6 +3,7 @@
 namespace Ftrrtf\RollbarBundle\Twig;
 
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
+use Ftrrtf\RollbarBundle\Provider\CheckIgnoreFunctionProviderInterface;
 
 /**
  * Rollbar twig extension.
@@ -25,15 +26,26 @@ class RollbarExtension extends \Twig_Extension
     private $userHelper;
 
     /**
-     * @param array      $notifierOptions
-     * @param array      $environmentOptions
-     * @param UserHelper $userHelper
+     * @var CheckIgnoreFunctionProviderInterface
      */
-    public function __construct($notifierOptions, $environmentOptions, UserHelper $userHelper)
-    {
+    private $checkIgnoreFunctionProvider;
+
+    /**
+     * @param array                                $notifierOptions
+     * @param array                                $environmentOptions
+     * @param UserHelper                           $userHelper
+     * @param CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider
+     */
+    public function __construct(
+        array $notifierOptions,
+        array $environmentOptions,
+        UserHelper $userHelper,
+        CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider
+    ) {
         $this->notifierOptions = $notifierOptions;
         $this->environmentOptions = $environmentOptions;
         $this->userHelper = $userHelper;
+        $this->checkIgnoreFunctionProvider = $checkIgnoreFunctionProvider;
     }
 
     /**
@@ -110,10 +122,12 @@ END_HTML;
     protected function getCheckIgnoreConfig()
     {
         $allowedHosts = json_encode($this->notifierOptions['allowed_js_hosts']);
+        $customCheckIgnoreFunction = $this->checkIgnoreFunctionProvider->getCheckIgnoreFunctionCode();
 
         return <<<END_HTML
 (function(Rollbar) {
     var allowedHosts = {$allowedHosts};
+    var customCheckIgnoreFunction = {$customCheckIgnoreFunction};
     if (allowedHosts.length === 0) {
         allowedHosts.push(window.location.origin);
     }
@@ -141,6 +155,10 @@ END_HTML;
 
     function ignoreRemoteUncaught(isUncaught, args, payload) {
         try {
+            if (typeof customCheckIgnoreFunction === 'function' && customCheckIgnoreFunction(isUncaught, args, payload)) {
+                return true;
+            }
+
             //this prevents breaking simple string reporting
             if (isLogMessage(payload)) {
                 return false;

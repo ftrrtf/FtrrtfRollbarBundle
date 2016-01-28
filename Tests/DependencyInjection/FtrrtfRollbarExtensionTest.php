@@ -6,6 +6,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
 {
@@ -91,7 +92,8 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
             array(
                 new Reference('ftrrtf_rollbar.notifier'),
                 new Reference('ftrrtf_rollbar.error_handler'),
-                new Reference('security.context'),
+                new Reference('security.token_storage'),
+                new Reference('security.authorization_checker'),
                 new Reference('ftrrtf_rollbar.helper.user'),
             )
         );
@@ -139,6 +141,7 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                     'http://myhost.mydomain.com',
                     'http://myhost2.mydomain.com',
                 ),
+                'check_ignore_function_provider' => 'ftrrtf_rollbar.check_ignore_function_provider.default'
             ),
             'ftrrtf_rollbar.notifier.client.options'
         );
@@ -149,6 +152,7 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                 '%ftrrtf_rollbar.notifier.client.options%',
                 '%ftrrtf_rollbar.environment.options%',
                 new Reference('ftrrtf_rollbar.helper.user'),
+                new Expression("service(parameter('ftrrtf_rollbar.notifier.client.check_ignore_function_provider'))"),
             )
         );
 

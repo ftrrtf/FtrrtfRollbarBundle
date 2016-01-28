@@ -5,6 +5,7 @@ namespace spec\Ftrrtf\RollbarBundle\EventListener;
 use Ftrrtf\Rollbar\Environment;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
+use Ftrrtf\RollbarBundle\EventListener\RollbarListener;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -13,23 +14,28 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @mixin RollbarListener
+ */
 class RollbarListenerSpec extends ObjectBehavior
 {
     function let(
         Notifier $notifier,
         ErrorHandler $errorHandler,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         Environment $environment,
         UserHelper $userHelper
     ) {
         $notifier->getEnvironment()->willReturn($environment);
         $environment->setOption('person_callback', Argument::type('\Closure'))->shouldBeCalled();
 
-        $this->beConstructedWith($notifier, $errorHandler, $securityContext, $userHelper);
+        $this->beConstructedWith($notifier, $errorHandler, $tokenStorage, $authorizationChecker, $userHelper);
     }
 
     function it_is_initializable()
@@ -37,7 +43,7 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->shouldHaveType('Ftrrtf\RollbarBundle\EventListener\RollbarListener');
     }
 
-    function it_register_handlers_on_kernel_request(
+    function it_registers_handlers_on_kernel_request(
         ErrorHandler $errorHandler,
         Notifier $notifier,
         GetResponseEvent $event
@@ -48,21 +54,21 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-    function it_catch_exception(GetResponseForExceptionEvent $event, \Exception $exception)
+    function it_catches_exception(GetResponseForExceptionEvent $event, \Exception $exception)
     {
         $event->getException()->willReturn($exception);
         $this->onKernelException($event);
         $this->getException()->shouldReturn($exception);
     }
 
-    function it_skip_HTTP_exception(GetResponseForExceptionEvent $event, HttpException $httpException)
+    function it_skips_HTTP_exception(GetResponseForExceptionEvent $event, HttpException $httpException)
     {
         $event->getException()->willReturn($httpException);
         $this->onKernelException($event);
         $this->getException()->shouldReturn(null);
     }
 
-    function it_report_exception_on_console_exception(Notifier $notifier, \Exception $exception, ConsoleExceptionEvent $event)
+    function it_reports_exception_on_console_exception(Notifier $notifier, \Exception $exception, ConsoleExceptionEvent $event)
     {
         $this->setException($exception);
         $event->getException()->willReturn($exception);
@@ -71,14 +77,14 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->onConsoleException($event);
     }
 
-    function it_report_exception_on_kernel_response(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
+    function it_reports_exception_on_kernel_response(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
     {
         $this->setException($exception);
         $notifier->reportException($exception)->shouldBeCalled();
         $this->onKernelResponse($event);
     }
 
-    function it_clear_exception_after_report(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
+    function it_clears_exception_after_report(Notifier $notifier, \Exception $exception, FilterResponseEvent $event)
     {
         $this->setException($exception);
 
@@ -88,20 +94,21 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->getException()->shouldReturn(null);
     }
 
-    function it_skip_report_if_there_is_no_exception_on_kernel_response(Notifier $notifier, FilterResponseEvent $event)
+    function it_skips_report_if_there_is_no_exception_on_kernel_response(Notifier $notifier, FilterResponseEvent $event)
     {
         $this->setException(null);
         $notifier->reportException(Argument::any())->shouldNotBeCalled();
         $this->onKernelResponse($event);
     }
 
-    function it_should_skip_user_data_if_user_is_not_defined(
-        SecurityContextInterface $securityContext,
+    function it_skips_user_data_if_user_is_not_defined(
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
         UserHelper $userHelper
     ) {
-        $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
-        $securityContext->getToken()->willReturn($token);
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn(null);
 
         $userHelper->buildUserData(Argument::any())->shouldNotBeCalled();
@@ -110,12 +117,13 @@ class RollbarListenerSpec extends ObjectBehavior
     }
 
     function it_should_skip_user_data_if_user_is_anonymous(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
         UserHelper $userHelper
     ) {
-        $securityContext->getToken()->willReturn($token);
-        $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(false);
+        $tokenStorage->getToken()->willReturn($token);
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(false);
 
         $userHelper->buildUserData(Argument::any())->shouldNotBeCalled();
 
@@ -123,13 +131,14 @@ class RollbarListenerSpec extends ObjectBehavior
     }
 
     function it_get_user_data_if_user_is_defined(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
         UserInterface $user,
         UserHelper $userHelper
     ) {
-        $securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
-        $securityContext->getToken()->willReturn($token);
+        $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $userHelper->buildUserData($user)->shouldBeCalled();
