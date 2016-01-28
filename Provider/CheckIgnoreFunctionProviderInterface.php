@@ -2,6 +2,9 @@
 
 namespace Ftrrtf\RollbarBundle\Provider;
 
+/**
+ * Interface for "check ignore" function provider.
+ */
 interface CheckIgnoreFunctionProviderInterface
 {
     /**

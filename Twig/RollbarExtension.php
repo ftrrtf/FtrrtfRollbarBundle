@@ -31,9 +31,9 @@ class RollbarExtension extends \Twig_Extension
     private $checkIgnoreFunctionProvider;
 
     /**
-     * @param array      $notifierOptions
-     * @param array      $environmentOptions
-     * @param UserHelper $userHelper
+     * @param array                                $notifierOptions
+     * @param array                                $environmentOptions
+     * @param UserHelper                           $userHelper
      * @param CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider
      */
     public function __construct(
@@ -42,10 +42,10 @@ class RollbarExtension extends \Twig_Extension
         UserHelper $userHelper,
         CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider
     ) {
-        $this->notifierOptions              = $notifierOptions;
-        $this->environmentOptions           = $environmentOptions;
-        $this->userHelper                   = $userHelper;
-        $this->checkIgnoreFunctionProvider  = $checkIgnoreFunctionProvider;
+        $this->notifierOptions = $notifierOptions;
+        $this->environmentOptions = $environmentOptions;
+        $this->userHelper = $userHelper;
+        $this->checkIgnoreFunctionProvider = $checkIgnoreFunctionProvider;
     }
 
     /**

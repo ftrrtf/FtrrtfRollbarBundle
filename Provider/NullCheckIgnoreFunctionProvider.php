@@ -2,6 +2,9 @@
 
 namespace Ftrrtf\RollbarBundle\Provider;
 
+/**
+ * Skip checking.
+ */
 class NullCheckIgnoreFunctionProvider implements CheckIgnoreFunctionProviderInterface
 {
     /**

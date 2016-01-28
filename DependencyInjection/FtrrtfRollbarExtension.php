@@ -30,11 +30,13 @@ class FtrrtfRollbarExtension extends Extension
         if (isset($config['notifier']['client'])) {
             $container->setParameter('ftrrtf_rollbar.notifier.client.options', $config['notifier']['client']);
             if (isset($config['notifier']['client']['check_ignore_function_provider'])) {
-                $container->setParameter('ftrrtf_rollbar.notifier.client.check_ignore_function_provider', $config['notifier']['client']['check_ignore_function_provider']);
+                $container->setParameter(
+                    'ftrrtf_rollbar.notifier.client.check_ignore_function_provider',
+                    $config['notifier']['client']['check_ignore_function_provider']
+                );
             }
             $loader->load('client.xml');
         }
-
 
         if (isset($config['notifier']['server'])) {
             if (isset($config['notifier']['server']['transport']['type'])) {
