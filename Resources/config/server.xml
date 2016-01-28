@@ -30,7 +30,8 @@
         <service id="ftrrtf_rollbar.rollbar_listener" class="%ftrrtf_rollbar.rollbar_listener.class%">
             <argument type="service" id="ftrrtf_rollbar.notifier"/>
             <argument type="service" id="ftrrtf_rollbar.error_handler"/>
-            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.authorization_checker"/>
             <argument type="service" id="ftrrtf_rollbar.helper.user"/>
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-100" />
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="-200" />

@@ -8,8 +8,10 @@ use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -23,9 +25,14 @@ class RollbarListener
     protected $notifier;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
 
     /**
      * @var \Exception
@@ -44,20 +51,23 @@ class RollbarListener
     /**
      * Init.
      *
-     * @param Notifier                 $notifier
-     * @param ErrorHandler             $errorHandler
-     * @param SecurityContextInterface $securityContext
-     * @param UserHelper               $userHelper
+     * @param Notifier $notifier
+     * @param ErrorHandler $errorHandler
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param UserHelper $userHelper
      */
     public function __construct(
         Notifier $notifier,
         ErrorHandler $errorHandler,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         UserHelper $userHelper
     ) {
-        $this->notifier = $notifier;
+        $this->notifier  = $notifier;
         $this->errorHandler = $errorHandler;
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
         $this->userHelper = $userHelper;
 
         $self = $this;
@@ -124,11 +134,11 @@ class RollbarListener
      */
     public function getUserData()
     {
-        if (!$this->securityContext->getToken() || !$this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (!$this->tokenStorage->getToken() || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return null;
         }
 
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$user) {
             return null;
