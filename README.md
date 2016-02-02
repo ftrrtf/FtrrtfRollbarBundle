@@ -54,6 +54,9 @@ ftrrtf_rollbar:
             code_version: "some version string, such as a version number or git sha"
             guess_uncaught_frames: true
             rollbarjs_version: "rollbar_js_version" # i.e. v1.7, if empty then the newest available version (v1.x) will be used
+            # if you want to overwrite checkIgnore function (client js), you have to deliver
+            # service id which implements Ftrrtf\RollbarBundle\Provider\CheckIgnoreFunctionProviderInterface
+            # check_ignore_function_provider: my_service_name
             # optional - if not passed, window.location.origin will be only allowed host
             # allowed_js_hosts:
             #   - http://myhost.mydomain.com

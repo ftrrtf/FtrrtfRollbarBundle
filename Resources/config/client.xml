@@ -12,6 +12,8 @@
             <argument>%ftrrtf_rollbar.notifier.client.options%</argument>
             <argument>%ftrrtf_rollbar.environment.options%</argument>
             <argument type="service" id="ftrrtf_rollbar.helper.user"/>
+            <argument type="expression">service(parameter('ftrrtf_rollbar.notifier.client.check_ignore_function_provider'))</argument>
+            <!--<argument type="service" id="ftrrtf_rollbar.check_ignore_function_provider.default" />-->
             <tag name="twig.extension" />
         </service>
     </services>
