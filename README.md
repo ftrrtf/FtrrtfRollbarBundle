@@ -1,6 +1,11 @@
 FtrrtfRollbarBundle
 ===================
 
+[![Latest Stable Version](https://poser.pugx.org/ftrrtf/rollbar-bundle/v/stable)](https://packagist.org/packages/ftrrtf/rollbar-bundle) [![Total Downloads](https://poser.pugx.org/ftrrtf/rollbar-bundle/downloads)](https://packagist.org/packages/ftrrtf/rollbar-bundle) [![Latest Unstable Version](https://poser.pugx.org/ftrrtf/rollbar-bundle/v/unstable)](https://packagist.org/packages/ftrrtf/rollbar-bundle) [![License](https://poser.pugx.org/ftrrtf/rollbar-bundle/license)](https://packagist.org/packages/ftrrtf/rollbar-bundle)
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ftrrtf/FtrrtfRollbarBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ftrrtf/FtrrtfRollbarBundle/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/ftrrtf/FtrrtfRollbarBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ftrrtf/FtrrtfRollbarBundle/build-status/master)
+
 Symfony2 Bundle for rollbar.com
 
 ## Installation
