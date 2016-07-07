@@ -14,11 +14,16 @@ class UserHelper
     public function buildUserData($user)
     {
         $userData = array();
-        $userData['id'] = method_exists($user, 'getId')
-            ? $user->getId()
-            : (string) $user;
+        if(method_exists($user, 'getId')) 
+        {
+            $userData['id'] = $user->getId();  
+        }
+        else
+        {
+            $userData['id'] = $user->getUsername();
+        }
 
-        $userData['username'] = (string) $user;
+        $userData['username'] = $user->getUsername();
 
         if (method_exists($user, 'getEmail')) {
             $userData['email'] = $user->getEmail();
