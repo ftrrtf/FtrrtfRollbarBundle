@@ -5,7 +5,7 @@ namespace Ftrrtf\RollbarBundle\Rollbar;
 use Ftrrtf\Rollbar\Environment as BaseEnvironment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Configure Symfony specific env.
@@ -54,7 +54,7 @@ class Environment extends BaseEnvironment
     /**
      * @param OptionsResolverInterface $resolver
      */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    protected function setDefaultOptions(OptionsResolver $resolver)
     {
         parent::setDefaultOptions($resolver);
 
