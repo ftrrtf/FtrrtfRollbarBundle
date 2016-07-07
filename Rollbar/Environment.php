@@ -54,7 +54,7 @@ class Environment extends BaseEnvironment
     /**
      * @param OptionsResolverInterface $resolver
      */
-    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    protected function setDefaultOptions(OptionsResolver $resolver)
     {
         parent::setDefaultOptions($resolver);
 
