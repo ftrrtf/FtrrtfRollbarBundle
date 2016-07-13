@@ -3,6 +3,7 @@
 namespace spec\Ftrrtf\RollbarBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserHelperSpec extends ObjectBehavior
 {
@@ -15,13 +16,12 @@ class UserHelperSpec extends ObjectBehavior
         $user = 'string_user';
 
         $this->buildUserData($user)->shouldReturn(array(
-            'id' => 'string_user',
-            'username' => 'string_user',
+            'id' => 'string_user'
         ));
     }
 
-    function it_get_user_data_if_user_is_simple_token_user(TokenUserInterface $user) {
-        $user->__toString()->willReturn('username');
+    function it_get_user_data_if_user_is_simple_user(UserInterface $user) {
+        $user->getUsername()->willReturn('username');
 
         $this->buildUserData($user)->shouldReturn(array(
             'id' => 'username',
@@ -29,31 +29,22 @@ class UserHelperSpec extends ObjectBehavior
         ));
     }
 
-    function it_get_user_data_if_user_with_id_and_email(
-        ExtendedUserInterface $user
-    ) {
+    function it_get_user_data_if_user_with_id_and_email(ExtendedUser $user) {
         $user->getId()->willReturn(123);
+        $user->getUsername()->willReturn('username');
         $user->getEmail()->willReturn('mail@host');
-        $user->__toString()->willReturn('username');
 
         $this->buildUserData($user)->shouldReturn(array(
-            'id'       => 123,
+            'id' => 123,
             'username' => 'username',
-            'email'    => 'mail@host',
+            'email' => 'mail@host',
         ));
     }
-
 }
 
-interface TokenUserInterface
+abstract class ExtendedUser implements UserInterface
 {
-    function getUsername();
-    function __toString();
-}
-
-interface ExtendedUserInterface
-{
-    function getId();
-    function getEmail();
-    function __toString();
+    function getId(){}
+    function getEmail(){}
+    function getUsername(){}
 }
