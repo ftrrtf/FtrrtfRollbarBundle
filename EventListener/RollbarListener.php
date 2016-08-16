@@ -5,6 +5,7 @@ namespace Ftrrtf\RollbarBundle\EventListener;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -103,6 +104,14 @@ class RollbarListener
         }
 
         $this->setException($event->getException());
+    }
+
+    /**
+     * @param ConsoleCommandEvent $event
+     */
+    public function onConsoleCommand(ConsoleCommandEvent $event)
+    {
+        $this->errorHandler->registerExceptionHandler($this->notifier);
     }
 
     /**

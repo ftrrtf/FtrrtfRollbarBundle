@@ -9,6 +9,7 @@ use Ftrrtf\RollbarBundle\EventListener\RollbarListener;
 use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleExceptionEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -68,9 +69,18 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->getException()->shouldReturn(null);
     }
 
+    function it_registers_exception_handler_for_console_command_event(
+        ConsoleCommandEvent $event,
+        ErrorHandler $errorHandler,
+        Notifier $notifier
+    ) {
+        $errorHandler->registerExceptionHandler($notifier)->shouldBeCalled();
+
+        $this->onConsoleCommand($event);
+    }
+
     function it_reports_exception_on_console_exception(Notifier $notifier, \Exception $exception, ConsoleExceptionEvent $event)
     {
-        $this->setException($exception);
         $event->getException()->willReturn($exception);
 
         $notifier->reportException($exception)->shouldBeCalled();
@@ -116,7 +126,7 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->getUserData()->shouldBeNull();
     }
 
-    function it_should_skip_user_data_if_user_is_anonymous(
+    function it_skips_user_data_if_user_is_anonymous(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
@@ -130,7 +140,7 @@ class RollbarListenerSpec extends ObjectBehavior
         $this->getUserData()->shouldBeNull();
     }
 
-    function it_get_user_data_if_user_is_defined(
+    function it_gets_user_data_if_user_is_defined(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,

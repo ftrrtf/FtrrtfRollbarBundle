@@ -117,6 +117,10 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                         'method' => 'onKernelRequest',
                     ),
                     array(
+                        'event' => 'console.command',
+                        'method' => 'onConsoleCommand',
+                    ),
+                    array(
                         'event' => 'console.exception',
                         'method' => 'onConsoleException',
                     ),
