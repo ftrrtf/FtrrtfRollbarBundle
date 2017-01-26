@@ -7,13 +7,15 @@ use Ftrrtf\RollbarBundle\Helper\UserHelper;
 use Ftrrtf\RollbarBundle\Provider\CheckIgnoreFunctionProviderInterface;
 use Ftrrtf\RollbarBundle\Twig\RollbarExtension;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Twig_Extension as TwigExtension;
 
 /**
  * @mixin RollbarExtension
  */
 class RollbarExtensionSpec extends ObjectBehavior
 {
+    const EXPECTED_EXTENSION_NAME = 'ftrrtf_rollbar';
+
     function let(UserHelper $helper, CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider)
     {
         $this->beConstructedWith([], [], $helper, $checkIgnoreFunctionProvider);
@@ -21,7 +23,13 @@ class RollbarExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Ftrrtf\RollbarBundle\Twig\RollbarExtension');
+        $this->shouldHaveType(RollbarExtension::class);
+        $this->shouldHaveType(TwigExtension::class);
+    }
+
+    function it_has_name()
+    {
+        $this->getName()->shouldReturn(self::EXPECTED_EXTENSION_NAME);
     }
 
     function it_uses_the_newest_version_of_rollbarjs(UserHelper $helper, Application $app, CheckIgnoreFunctionProviderInterface $checkIgnoreFunctionProvider)

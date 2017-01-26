@@ -2,6 +2,7 @@
 
 namespace spec\Ftrrtf\RollbarBundle\EventListener;
 
+use Closure;
 use Ftrrtf\Rollbar\Environment;
 use Ftrrtf\Rollbar\ErrorHandler;
 use Ftrrtf\Rollbar\Notifier;
@@ -34,14 +35,14 @@ class RollbarListenerSpec extends ObjectBehavior
         UserHelper $userHelper
     ) {
         $notifier->getEnvironment()->willReturn($environment);
-        $environment->setOption('person_callback', Argument::type('\Closure'))->shouldBeCalled();
+        $environment->setOption('person_callback', Argument::type(Closure::class))->shouldBeCalled();
 
         $this->beConstructedWith($notifier, $errorHandler, $tokenStorage, $authorizationChecker, $userHelper);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Ftrrtf\RollbarBundle\EventListener\RollbarListener');
+        $this->shouldHaveType(RollbarListener::class);
     }
 
     function it_registers_handlers_on_kernel_request(
