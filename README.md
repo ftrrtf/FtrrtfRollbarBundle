@@ -10,6 +10,10 @@ Symfony2 Bundle for rollbar.com
 
 ## Installation
 
+### Requirements
+
+This package needs: `PHP >= 5.5.9`
+
 ### Install the bundle via Composer
 
 #### Method 1: Auto-Update of your composer.json
