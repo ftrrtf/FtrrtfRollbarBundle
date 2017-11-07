@@ -48,6 +48,7 @@ class FtrrtfRollbarExtension extends Extension
                         $this->prepareLogsDir(
                             $container->getParameterBag()->resolveValue($transport['agent_log_location'])
                         );
+
                         break;
                     case 'curl':
                     default:

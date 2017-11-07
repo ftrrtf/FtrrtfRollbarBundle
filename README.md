@@ -24,7 +24,7 @@ This package needs: `PHP >= 5.5.9`
 
     "require" :  {
         // ...
-        "ftrrtf/rollbar-bundle": "v0.5",
+        "ftrrtf/rollbar-bundle": "^1.0",
     }
 
 ### Register the bundle in your application
