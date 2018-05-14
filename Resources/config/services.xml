@@ -6,12 +6,18 @@
     <parameters>
         <parameter key="ftrrtf_rollbar.helper.user.class">Ftrrtf\RollbarBundle\Helper\UserHelper</parameter>
         <parameter key="ftrrtf_rollbar.check_ignore_function_provider.default.class">Ftrrtf\RollbarBundle\Provider\NullCheckIgnoreFunctionProvider</parameter>
+        <parameter key="ftrrtf_rollbar.transform_payload_function_provider.default.class">Ftrrtf\RollbarBundle\Provider\NullTransformPayloadFunctionProvider</parameter>
+        <parameter key="ftrrtf_rollbar.transform_payload_function_provider.anonymize.class">Ftrrtf\RollbarBundle\Provider\AnonymizeTransformPayloadFunctionProvider</parameter>
     </parameters>
 
     <services>
         <service id="ftrrtf_rollbar.helper.user" class="%ftrrtf_rollbar.helper.user.class%">
         </service>
         <service id="ftrrtf_rollbar.check_ignore_function_provider.default" class="%ftrrtf_rollbar.check_ignore_function_provider.default.class%">
+        </service>
+        <service id="ftrrtf_rollbar.transform_payload_function_provider.default" class="%ftrrtf_rollbar.transform_payload_function_provider.default.class%">
+        </service>
+        <service id="ftrrtf_rollbar.transform_payload_function_provider.anonymize" class="%ftrrtf_rollbar.transform_payload_function_provider.anonymize.class%">
         </service>
     </services>
 </container>
