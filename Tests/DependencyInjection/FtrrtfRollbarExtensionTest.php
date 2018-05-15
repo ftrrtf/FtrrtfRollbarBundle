@@ -145,7 +145,8 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                     'http://myhost.mydomain.com',
                     'http://myhost2.mydomain.com',
                 ),
-                'check_ignore_function_provider' => 'ftrrtf_rollbar.check_ignore_function_provider.default'
+                'check_ignore_function_provider' => 'ftrrtf_rollbar.check_ignore_function_provider.default',
+                'transform_payload_function_provider' => 'ftrrtf_rollbar.transform_payload_function_provider.default'
             ),
             'ftrrtf_rollbar.notifier.client.options'
         );
@@ -157,6 +158,7 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                 '%ftrrtf_rollbar.environment.options%',
                 new Reference('ftrrtf_rollbar.helper.user'),
                 new Expression("service(parameter('ftrrtf_rollbar.notifier.client.check_ignore_function_provider'))"),
+                new Expression("service(parameter('ftrrtf_rollbar.notifier.client.transform_payload_function_provider'))"),
             )
         );
 

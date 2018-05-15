@@ -96,6 +96,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'rollbarjs_version' => 'v1',
                         'allowed_js_hosts' => array(),
                         'check_ignore_function_provider' => 'ftrrtf_rollbar.check_ignore_function_provider.default',
+                        'transform_payload_function_provider' => 'ftrrtf_rollbar.transform_payload_function_provider.default',
                     ),
                 ),
             ),

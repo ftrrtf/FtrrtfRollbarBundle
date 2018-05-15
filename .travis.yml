@@ -29,7 +29,7 @@ before_install:
 
 install:
   - if [[ $SYMFONY_VERSION != "" ]]; then composer require "symfony/framework-bundle:${SYMFONY_VERSION}" --no-update -n; fi;
-  - composer update $COMPOSER_FLAGS --prefer-dist --no-interaction
+  - travis_wait 20 composer update $COMPOSER_FLAGS --prefer-dist --no-interaction
 
 script:
   - vendor/bin/phpunit --verbose
