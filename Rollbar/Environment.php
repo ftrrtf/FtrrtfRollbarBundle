@@ -61,7 +61,26 @@ class Environment extends BaseEnvironment
         $resolver->setDefaults(
             array(
                 'framework' => Kernel::VERSION,
+                'anonymize' => false,
             )
         );
+    }
+
+    public function getUserIP()
+    {
+        if ($this->options['anonymize']) {
+            return null;
+        }
+
+        return parent::getUserIP();
+    }
+
+    public function getPersonData()
+    {
+        if ($this->options['anonymize']) {
+            return null;
+        }
+
+        return parent::getPersonData();
     }
 }

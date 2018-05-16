@@ -115,6 +115,26 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'branch' => 'master',
                     'root_dir' => '',
                     'code_version' => '12345',
+                    'anonymize' => false,
+                ),
+            ),
+            'anonymized environment configuration' => array(
+                'options' => array(
+                    'notifier' => array(),
+                    'environment' => array(
+                        'environment' => 'production',
+                        'branch' => 'master',
+                        'code_version' => '12345',
+                        'anonymize' => true,
+                    ),
+                ),
+                'check config key' => 'environment',
+                'expected config' => array(
+                    'environment' => 'production',
+                    'branch' => 'master',
+                    'root_dir' => '',
+                    'code_version' => '12345',
+                    'anonymize' => true,
                 ),
             ),
         );

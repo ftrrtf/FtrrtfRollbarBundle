@@ -78,4 +78,41 @@ class EnvironmentSpec extends ObjectBehavior
     {
         $this->getFramework()->shouldReturn(Kernel::VERSION);
     }
+
+    function it_anonymizes_user_ip()
+    {
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
+        $this->beConstructedWith([
+            'anonymize' => true,
+        ]);
+
+        $this->getUserIP()->shouldReturn(null);
+    }
+
+    function it_returns_user_ip()
+    {
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $this->getUserIP()->shouldReturn('127.0.0.1');
+    }
+
+    function it_anonymizes_personal_data()
+    {
+        $this->beConstructedWith([
+            'anonymize' => true,
+        ]);
+
+        $this->getPersonData()->shouldReturn(null);
+    }
+
+    function it_returns_personal_data()
+    {
+        $this->beConstructedWith([
+            'person' => [
+                'id' => '12345',
+            ],
+        ]);
+
+        $this->getPersonData()->shouldNotReturn(null);
+    }
 }

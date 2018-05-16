@@ -81,6 +81,7 @@ ftrrtf_rollbar:
             #   - http://myhost2.mydomain.com
     environment:
         environment: "%rollbar_environment%[%kernel.environment%]"
+        anonymize: true # default to false. If set to true, then neither user_ip nor personal data will be reported
 ```
 
 ## TODO

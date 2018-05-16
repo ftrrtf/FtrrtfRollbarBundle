@@ -70,6 +70,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('environment')->defaultValue('unknown')->end()
                         ->scalarNode('framework')->end()
                         ->scalarNode('code_version')->defaultValue('')->end()
+                        ->booleanNode('anonymize')->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end();

@@ -42,6 +42,7 @@ class FtrrtfRollbarExtensionTest extends AbstractExtensionTest
                 'root_dir' => 'path/to',
                 'framework' => 'sf',
                 'code_version' => 'somehash',
+                'anonymize' => false,
             ),
             'ftrrtf_rollbar.environment.options'
         );
